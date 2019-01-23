@@ -1,3 +1,7 @@
+// window.onload = function() {
+//   myStopFunction();
+// };
+
 // get the <canvas> tag from the document
 var canvas = document.querySelector(".game-area");
 
@@ -5,9 +9,7 @@ var canvas = document.querySelector(".game-area");
 var ctx = canvas.getContext("2d");
 // ---------------------------------------------------------------
 
-//// CHARACTERS ////
-
-// Celine - PLAYER
+// PLAYER
 var celineImg = new Image();
 celineImg.src = "./images/celine.jpeg";
 celineImg.onLoad = function() {
@@ -57,7 +59,7 @@ var allPeople = [
   // new People(ctx.drawImage("./images/woman.png", 680, 110, 99, 124))
 ];
 
-//// CHARACTER OBSTACLES ////
+//// OBSTACLES ////
 // Businessman
 var businessmanImg = new Image();
 // specify 'src' as if it was from the HTML FILE
@@ -83,32 +85,6 @@ function drawBusinessman() {
 
 var businessmanX = 175;
 var businessmanY = 110;
-
-// // Businessman #2
-// var businessmanImg = new Image();
-// // specify 'src' as if it was from the HTML FILE
-// businessmanImg.src = "./images/businessman.png";
-
-// // run this fucntion when the image finishes loading
-// businessmanImg.onload = function() {
-//   // draw an image (imageObj, x, y, width, height)
-//   ctx.drawImage(businessmanImg, businessmanX, businessmanY, 70, 110);
-// };
-
-// function drawBusinessman() {
-//   // AUTOMATICALLY increase businessman's x (he will move top to bottom)
-//   businessmanY += 4; // speed
-//   if (businessmanY > 600) {
-//     businessmanY = 0;
-//     // give businessman a random new X coordinate when he's reset
-//     businessmanX = Math.floor(Math.random() * 690);
-//   }
-//   ctx.drawImage(businessmanImg, businessmanX, businessmanY, 70, 110);
-//   //allPeople.push((businessmanImg, businessmanX, businessmanY, 70, 110));
-// }
-
-// var businessmanX = 175;
-// var businessmanY = 110;
 
 // Tourist
 var touristImg = new Image();
@@ -200,7 +176,6 @@ function drawingLoop() {
 //// KEYBOARD CONTROLS ////
 // keydown event handler (when user press down on ANY KEY)
 document.onkeydown = function(event) {
-  console.log("cococcococ");
   if (celine.isCrashed) {
     //exit this function without moving if Celine is crashed
     return;
@@ -255,32 +230,130 @@ function checkCrashes() {
 
 // ---------------------------------------------------------------
 
-//// WELCOME OVERLAY ////
-$(document).ready(function() {
-  // Show the popup
-  $(".popup-welcome").css({ display: "block" });
-  // // Background is less opaque
-  // $(".flex-header, .flex-middle").css({ opacity: "0.1" });
-});
+// var myVar = setInterval(myTimer(), 1000);
+
+//// TIMER ////
 
 $(".play-btn").click(function() {
-  $(".popup-welcome").removeClass(".popup-remove");
+  $(".game-start").addClass("hidden");
+  console.log("kajhskjfahsf");
+
+  var element = document.getElementById("timer");
+  var timerId = setInterval(myTimer, 1000);
+  var time = 5;
+
+  function myTimer() {
+    // Set the date we're counting down to
+    // var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
+
+    // Update the count down every 1 second
+    if (time === -1) {
+      clearInterval(timerId);
+      $(".game-end").addClass("showing");
+    } else {
+      element.innerHTML = time + "s";
+      time--;
+    }
+    // Get todays date and time
+    // var now = new Date().getTime();
+
+    // Find the distance between now and the count down date
+    // var distance = countDownDate - now;
+
+    // Time calculations for minutes and seconds
+    // var minutes = Math.floor((distance % (1000 * 60 * 1)) / (1000 * 60));
+    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Display the result in the element with id="demo"
+    // document.getElementById("timer").innerHTML = seconds + "s ";
+
+    // If the count down is finished
+    // if (distance === 0) {
+    //   clearInterval(x);
+    //   $(".game-end").addClass("showing"); // open game-end window
+    // }
+  }
 });
 
-// $(function(){
-// var overlay = $('<div id="overlay"></div>');
-// overlay.show();
-// overlay.appendTo(document.body);
-// $('.popup').show();
-// $('.close').click(function(){
-// $('.popup').hide();
-// overlay.appendTo(document.body).remove();
-// return false;
+// function myStopFunction() {
+//   clearInterval(myVar);
+// }
+
+// ---------------------------------------------------------------
+// Pop-up message with result
+// function updateEndContent() {
+//   var isRock = $(".player .selection").hasClass("rock");
+//   var isPaper = $(".player .selection").hasClass("paper");
+//   var isScissors = $(".player .selection").hasClass("scissors");
+
+//   if (isRock) {
+//     //opponent: rock ties, paper we lose, scissors we win
+//     playerRock();
+//   } else if (isPaper) {
+//     //opponent: paper ties, scissors we lose, rock we win
+//     playerPaper();
+//   } else {
+//     //opponent: scissors ties, rock we lose, paper we win
+//     playerScissors();
+//   }
+
+//   // show the game over screen
+//   $(".game-end").addClass("showing");
+// }
+
+// function playerRock() {
+//   //opponent: rock ties, paper we lose, scissors we win
+//   if ($(".game-end h2").hasClass("rock")) {
+//     $(".game-end h2").html("It's a tie! 👔");
+//   } else if ($(".opponent .selection").hasClass("paper")) {
+//     $(".game-end h2").html("Opponent wins. 😕");
+//   } else {
+//     $(".game-end h2").html("You win! 🎉");
+//   }
+// }
+
+// ---------------------------------------------------------------
+
+//// START WINDOW ////
+
+// Start window appears by default
+// $(document).ready(function() {
+//   $(".game-start").addClass(".showing");
 // });
 
-// $('.x').click(function(){
-// $('.popup').hide();
-// overlay.appendTo(document.body).remove();
-// return false;
+// function closeStartWindow() {
+//   $(".game-start").removeClass(".start-content");
+//   // $(".game-start").addClass(".showing");
+//   // // <div class="game-start">
+//   // document.getElementById(".game-start").style.display = "none";
+// }
+
+// $(".play-btn").click(function() {
+//   $(".game-start").addClass("hidden");
+//   console.log("kajhskjfahsf");
+//   // myTimer();
+//   // closeStartWindow();
+//   // $(".game-start").addClass(".showing");
+//   // checkStartWindow();
 // });
+
+// function checkStartWindow() {
+//   if ($(".game-start").hasClass());
+
+//   var isWindowUp = $(".game-start").hasClass("showing");
+
+//   if (isWindowUp) {
+//     $(".game-start").addClass("showing");
+//   }
+// }
+
+// $(document).ready(function() {
+//   // Show the popup
+//   $(".popup-welcome").css({ display: "block" });
+//   // // Background is less opaque
+//   // $(".flex-header, .flex-middle").css({ opacity: "0.1" });
+// });
+
+// $(".play-btn").click(function() {
+//   $(".popup-welcome").removeClass(".popup-remove");
 // });
