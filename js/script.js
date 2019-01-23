@@ -1,7 +1,3 @@
-// window.onload = function() {
-//   myStopFunction();
-// };
-
 // get the <canvas> tag from the document
 var canvas = document.querySelector(".game-area");
 
@@ -228,130 +224,95 @@ function checkCrashes() {
   // });
 }
 
+// CELINE COLLISION
+// function rectangleCollision(rectA, rectB) {
+//   return (
+//     rectA.y + rectA.height >= rectB.y &&
+//     rectA.y <= rectB.y + rectB.height &&
+//     rectA.x + rectA.width >= rectB.x &&
+//     rectA.x <= rectB.x + rectB.width
+//   );
+// }
+
+// function checkCrashes() {
+//   allPipes.forEach(function(onePipe) {
+//     if (rectangleCollision(celine, onePipe)) {
+//       celine.isCrashed = true;
+//       onePipe.isCrashed = true;
+//     } else (!celine.isCrashed){
+//       this.x -= 2;
+//       if (this.x < -45) {
+//         this.x = 1200;
+//     }
+//   }
+//  });
+// }
+
 // ---------------------------------------------------------------
 
-//// TIMER ////
+//// PLAY BUTTONS & TIMER ////
 
 $(".play-btn").click(function() {
   $(".game-start").addClass("hidden");
-  console.log("kajhskjfahsf");
 
   var element = document.getElementById("timer");
   var timerId = setInterval(myTimer, 1000);
   var time = 5;
 
   function myTimer() {
-    // Set the date we're counting down to
-    // var countDownDate = new Date("Jan 5, 2021 15:37:25").getTime();
+    if (time === -1) {
+      clearInterval(timerId);
+      $(".game-end").addClass("showing");
+    } else {
+      element.innerHTML = "00:0" + time + "s";
+      time--;
+    }
+  }
+});
 
+$(".restart-btn").click(function() {
+  updateEndContent();
+  togglePopup();
+
+  var element = document.getElementById("timer");
+  var timerId = setInterval(myTimer, 1000);
+  var time = 5;
+
+  function myTimer() {
     // Update the count down every 1 second
     if (time === -1) {
       clearInterval(timerId);
       $(".game-end").addClass("showing");
     } else {
-      element.innerHTML = time + "s";
+      element.innerHTML = "00:0" + time + "s";
       time--;
     }
-    // Get todays date and time
-    // var now = new Date().getTime();
-
-    // Find the distance between now and the count down date
-    // var distance = countDownDate - now;
-
-    // Time calculations for minutes and seconds
-    // var minutes = Math.floor((distance % (1000 * 60 * 1)) / (1000 * 60));
-    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Display the result in the element with id="demo"
-    // document.getElementById("timer").innerHTML = seconds + "s ";
-
-    // If the count down is finished
-    // if (distance === 0) {
-    //   clearInterval(x);
-    //   $(".game-end").addClass("showing"); // open game-end window
-    // }
   }
 });
 
-// function myStopFunction() {
-//   clearInterval(myVar);
-// }
+function togglePopup() {
+  if ($(".game-end").hasClass());
+
+  var isPopupShowing = $(".game-end").hasClass("showing");
+
+  if (isPopupShowing) {
+    $(".game-end").removeClass("showing");
+  } else {
+    $(".game-end").addClass("showing");
+  }
+}
 
 // ---------------------------------------------------------------
-// Pop-up message with result
-// function updateEndContent() {
-//   var isRock = $(".player .selection").hasClass("rock");
-//   var isPaper = $(".player .selection").hasClass("paper");
-//   var isScissors = $(".player .selection").hasClass("scissors");
+// Update Pop-up message with result
 
-//   if (isRock) {
-//     //opponent: rock ties, paper we lose, scissors we win
-//     playerRock();
-//   } else if (isPaper) {
-//     //opponent: paper ties, scissors we lose, rock we win
-//     playerPaper();
-//   } else {
-//     //opponent: scissors ties, rock we lose, paper we win
-//     playerScissors();
-//   }
+function updateEndContent() {
+  var time = 0;
 
-//   // show the game over screen
-//   $(".game-end").addClass("showing");
-// }
-
-// function playerRock() {
-//   //opponent: rock ties, paper we lose, scissors we win
-//   if ($(".game-end h2").hasClass("rock")) {
-//     $(".game-end h2").html("It's a tie! 👔");
-//   } else if ($(".opponent .selection").hasClass("paper")) {
-//     $(".game-end h2").html("Opponent wins. 😕");
-//   } else {
-//     $(".game-end h2").html("You win! 🎉");
-//   }
-// }
-
-// ---------------------------------------------------------------
-
-//// START WINDOW ////
-
-// Start window appears by default
-// $(document).ready(function() {
-//   $(".game-start").addClass(".showing");
-// });
-
-// function closeStartWindow() {
-//   $(".game-start").removeClass(".start-content");
-//   // $(".game-start").addClass(".showing");
-//   // // <div class="game-start">
-//   // document.getElementById(".game-start").style.display = "none";
-// }
-
-// $(".play-btn").click(function() {
-//   $(".game-start").addClass("hidden");
-//   console.log("kajhskjfahsf");
-//   // myTimer();
-//   // closeStartWindow();
-//   // $(".game-start").addClass(".showing");
-//   // checkStartWindow();
-// });
-
-// function checkStartWindow() {
-//   if ($(".game-start").hasClass());
-
-//   var isWindowUp = $(".game-start").hasClass("showing");
-
-//   if (isWindowUp) {
-//     $(".game-start").addClass("showing");
-//   }
-// }
-
-// $(document).ready(function() {
-//   // Show the popup
-//   $(".popup-welcome").css({ display: "block" });
-//   // // Background is less opaque
-//   // $(".flex-header, .flex-middle").css({ opacity: "0.1" });
-// });
-
-// $(".play-btn").click(function() {
-//   $(".popup-welcome").removeClass(".popup-remove");
-// });
+  if (time === -1) {
+    $(".game-end h2").html("Time is up!");
+  } else if (celine.isCrashed) {
+    $(".game-end h2").html("Watch out for the other riders!");
+  } else {
+    $(".game-end h2").html("You caught the metro!");
+  }
+}

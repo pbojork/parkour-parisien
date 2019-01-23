@@ -8,43 +8,34 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <section class="game-start">
-      <div class="start-content">
-        <h1>Catch the Metro Game</h1>
-        <h2>It's rush hour in Paris!</h2>
-        <p>
-          Catch your train before the buzzer sounds <br />while avoiding the
-          characters of the metro.
-        </p>
-        <button class="play-btn">
-          <!-- onclick="setTimeout(myTimer, 1000)" -->
-          Play the Game!
-        </button>
-      </div>
-    </section>
-
-    <div><p id="timer" class="panel">TIMER</p></div>
-
-    <div class="set-up">
+    <main>
       <div class="metro-cabin"></div>
       <section>
+        <div class="panel"><p id="timer">00:30s</p></div>
         <!-- DON'T set the width and height in CSS -->
         <canvas class="game-area" width="800" height="600"></canvas>
       </section>
-    </div>
 
-    <section class="game-end">
-      <div class="end-content">
-        <h1>Game Over</h1>
-        <h2>Time's up / Watch out for the other riders</h2>
-        <p>
-          Catch your train before the buzzer sounds <br />while avoiding the
-          characters of the metro.
-        </p>
+      <div class="game-start">
+        <div class="start-content">
+          <h1>Catch the Metro Game</h1>
+          <h2>It's rush hour in Paris!</h2>
+          <p>
+            Catch your train before the buzzer sounds <br />while avoiding the
+            characters of the metro.
+          </p>
+          <button class="play-btn">Play the Game!</button>
+        </div>
       </div>
-      <button class="play-btn">Play Again!</button>
-    </section>
 
+      <div class="game-end">
+        <div class="end-content">
+          <h1>Game Over</h1>
+          <h2>Result</h2>
+          <button class="restart-btn">Play Again!</button>
+        </div>
+      </div>
+    </main>
     <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
