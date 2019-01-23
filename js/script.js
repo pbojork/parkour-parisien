@@ -230,8 +230,6 @@ function checkCrashes() {
 
 // ---------------------------------------------------------------
 
-// var myVar = setInterval(myTimer(), 1000);
-
 //// TIMER ////
 
 $(".play-btn").click(function() {
