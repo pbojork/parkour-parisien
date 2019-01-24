@@ -1,166 +1,112 @@
-// get the <canvas> tag from the document
-var canvas = document.querySelector(".game-area");
+window.onload = function() {
+  // console.log("window");
+  pause();
+};
 
-// get the context object (has all the methods for drawing things)
+var canvas = document.querySelector(".game-area");
 var ctx = canvas.getContext("2d");
+
 // ---------------------------------------------------------------
 
-// PLAYER
-var celineImg = new Image();
-celineImg.src = "./images/celine.jpeg";
-celineImg.onLoad = function() {
-  drawCeline();
+//// PLAYER ////
+
+var playerImg = new Image();
+playerImg.src = "./images/player.png";
+playerImg.onLoad = function() {
+  drawPlayer();
 };
 
 // group up character's variable in an object (easier to detect crashes later)
-var celine = {
-  x: 450,
-  y: 500,
-  width: 100,
-  height: 100,
-  // when Celine crashes the game is over
-  isCrashed: false
+var player = {
+  x: 346,
+  y: 460,
+  width: 92,
+  height: 138,
+  // when player crashes the game is over
+  isCrashed: true
 };
 
-function drawCeline() {
-  ctx.drawImage(celineImg, celine.x, celine.y, celine.width, celine.height);
+function drawPlayer() {
+  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
 }
 
 // People
 class People {
-  constructor(peopleImg, peopleX, peopleY, peopleWidth, peopleHeight) {
+  constructor(
+    peopleImg,
+    peopleX,
+    peopleY,
+    peopleWidth,
+    peopleHeight,
+    peopleSpeed
+  ) {
     this.img = peopleImg;
     this.x = peopleX;
     this.y = peopleY;
     this.width = peopleWidth;
     this.height = peopleHeight;
-    // when a person crashes it will turn red (starts as green)
+    this.speed = peopleSpeed;
     this.isCrashed = false;
   }
 
   drawPeople() {
-    if (!celine.isCrashed) {
-      // continue to move only if Celine hasn't crashed
-      this.x -= 2;
-      if (this.x < -45) {
-        this.x = 1200;
+    if (!player.isCrashed) {
+      this.y += this.speed; // speed
+      if (this.y > 600) {
+        this.y = 0;
+        // give people a random new X coordinate when he's reset
+        this.x = Math.floor(Math.random() * 670);
       }
     }
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 }
 
-var allPeople = [
-  // new People(ctx.drawImage("./images/businessman.png", 175, 110, 70, 110)),
-  // new People(ctx.drawImage("./images/tourist.png", 450, 110, 120, 110)),
-  // new People(ctx.drawImage("./images/woman.png", 680, 110, 99, 124))
-];
-
 //// OBSTACLES ////
+
+// Businesswoman
+var businesswomanImg = new Image();
+// specify 'src' as if it was from the HTML FILE
+businesswomanImg.src = "./images/businesswoman.png";
+
 // Businessman
 var businessmanImg = new Image();
 // specify 'src' as if it was from the HTML FILE
 businessmanImg.src = "./images/businessman.png";
-
-// run this fucntion when the image finishes loading
-businessmanImg.onload = function() {
-  // draw an image (imageObj, x, y, width, height)
-  ctx.drawImage(businessmanImg, businessmanX, businessmanY, 70, 110);
-};
-
-function drawBusinessman() {
-  // AUTOMATICALLY increase businessman's x (he will move top to bottom)
-  businessmanY += 4; // speed
-  if (businessmanY > 600) {
-    businessmanY = 0;
-    // give businessman a random new X coordinate when he's reset
-    businessmanX = Math.floor(Math.random() * 690);
-  }
-  ctx.drawImage(businessmanImg, businessmanX, businessmanY, 70, 110);
-  //allPeople.push((businessmanImg, businessmanX, businessmanY, 70, 110));
-}
-
-var businessmanX = 175;
-var businessmanY = 110;
-
 // Tourist
 var touristImg = new Image();
 // specify 'src' as if it was from the HTML FILE
 touristImg.src = "./images/tourist.png";
-
-// run this fucntion when the image finishes loading
-touristImg.onload = function() {
-  // draw an image (imageObj, x, y, width, height)
-  ctx.drawImage(touristImg, touristX, touristY, 150, 140);
-};
-
-function drawTourist() {
-  // AUTOMATICALLY increase tourist's x (he will move top to bottom)
-  touristY += 3; // speed
-  if (touristY > 600) {
-    touristY = 0;
-    // give tourist a random new X coordinate when he's reset
-    touristX = Math.floor(Math.random() * 690);
-  }
-  ctx.drawImage(touristImg, touristX, touristY, 120, 110);
-}
-
-var touristX = 450;
-var touristY = 110;
 
 // Old Woman
 var womanImg = new Image();
 // specify 'src' as if it was from the HTML FILE
 womanImg.src = "./images/woman.png";
 
-// run this fucntion when the image finishes loading
-womanImg.onload = function() {
-  // draw an image (imageObj, x, y, width, height)
-  ctx.drawImage(womanImg, womanX, womanY, 99, 124);
-};
-
-function drawWoman() {
-  // AUTOMATICALLY increase woman's x (he will move top to bottom)
-  womanY += 1; // speed
-  if (womanY > 600) {
-    womanY = 0;
-    // give woman a random new X coordinate when he's reset
-    womanX = Math.floor(Math.random() * 690);
-  }
-  ctx.drawImage(womanImg, womanX, womanY, 99, 124);
-}
-
-var womanX = 680;
-var womanY = 110;
+var allPeople = [
+  // x, y, width, height, speed
+  new People(businesswomanImg, 100, -140, 90, 140, 3),
+  new People(businessmanImg, 300, -140, 89, 140, 4),
+  new People(touristImg, 450, -140, 153, 140, 3),
+  new People(womanImg, 660, -140, 124, 140, 1)
+];
 
 //// DRAWING LOOP ////
-// call "drawingLoop" for the first time to begin the loop
+
 drawingLoop();
 
 function drawingLoop() {
   // erase the whole canvas before drawing (x, y, width, height)
-  ctx.clearRect(0, 0, 1000, 600);
+  ctx.clearRect(0, 0, 800, 600);
 
-  drawCeline();
-  drawBusinessman();
-  drawTourist();
-  drawWoman();
-  // drawAllPeople();
-
-  // console.log(allPeople);
+  drawPlayer();
 
   allPeople.forEach(function(onePerson) {
-    onePerson.drawBusinessman();
+    onePerson.drawPeople();
   });
 
+  // checkWon();
   checkCrashes();
-
-  // allPeople.forEach(function(onePerson) {
-  //   onePerson.drawPeople();
-  // });
-
-  if (celine.isCrashed) {
-    //
-  }
 
   // ask the browser for a chance to re-draw the scene
   requestAnimationFrame(function() {
@@ -169,150 +115,173 @@ function drawingLoop() {
   });
 }
 
+// ---------------------------------------------------------------
+
 //// KEYBOARD CONTROLS ////
-// keydown event handler (when user press down on ANY KEY)
+
 document.onkeydown = function(event) {
-  if (celine.isCrashed) {
-    //exit this function without moving if Celine is crashed
+  if (player.isCrashed) {
+    //exit this function without moving if player is crashed
     return;
   }
 
   switch (event.keyCode) {
     case 37: // left arrow
-      // prevents the default behavior of keyboard presses (scrolling ↑ ↓)
       event.preventDefault();
-      celine.x -= 20;
+      if (player.x > 0) {
+        player.x -= 20;
+      }
       break;
 
     case 38: // up arrow
-      // prevents the default behavior of keyboard presses (scrolling ↑ ↓)
       event.preventDefault();
-      celine.y -= 20;
+      if (player.y > 0) {
+        player.y -= 20;
+      }
       break;
 
     case 39: // right arrow
-      // prevents the default behavior of keyboard presses (scrolling ↑ ↓)
       event.preventDefault();
-      celine.x += 20;
+      if (player.x < 700) {
+        // change to new character
+        player.x += 20;
+      }
       break;
 
     case 40: // down arrow
-      // prevents the default behavior of keyboard presses (scrolling ↑ ↓)
       event.preventDefault();
-      celine.y += 20;
+      if (player.y < 500) {
+        // change to new character
+        player.y += 20;
+      }
       break;
   }
 };
 
 //// COLLISION ////
+
 function rectangleCollision(rectA, rectB) {
   return (
-    rectA.x + rectA.width <= rectB.width &&
-    rectB.x + rectB.width > rectA.x.width
+    rectA.y + rectA.height >= rectB.y &&
+    rectA.y <= rectB.y + rectB.height &&
+    rectA.x + rectA.width >= rectB.x &&
+    rectA.x <= rectB.x + rectB.width
   );
 }
 
-//console.log(allPeople);
-
 function checkCrashes() {
-  // allPeople.forEach(function(onePerson) {
-  //   // console.log(onePerson);
-  //   if (rectangleCollision(celine, onePerson)) {
-  //     celine.isCrashed = true;
-  //     onePerson.isCrashed = true;
-  //   }
-  // });
+  allPeople.forEach(function(onePerson) {
+    if (rectangleCollision(player, onePerson) && player.isCrashed === false) {
+      player.isCrashed = true;
+      pause(); // not working !!
+      showPopup();
+      $(".game-end h2").html("Watch out for the other riders!");
+    }
+  });
 }
 
-// CELINE COLLISION
-// function rectangleCollision(rectA, rectB) {
-//   return (
-//     rectA.y + rectA.height >= rectB.y &&
-//     rectA.y <= rectB.y + rectB.height &&
-//     rectA.x + rectA.width >= rectB.x &&
-//     rectA.x <= rectB.x + rectB.width
-//   );
-// }
+//// WINNING ////
 
-// function checkCrashes() {
-//   allPipes.forEach(function(onePipe) {
-//     if (rectangleCollision(celine, onePipe)) {
-//       celine.isCrashed = true;
-//       onePipe.isCrashed = true;
-//     } else (!celine.isCrashed){
-//       this.x -= 2;
-//       if (this.x < -45) {
-//         this.x = 1200;
-//     }
-//   }
-//  });
-// }
+function playerPosition(rectA) {
+  return rectA.x >= 0 && rectA.x + rectA.width <= 800;
+}
+
+function checkWon() {
+  if (playerPosition(player)) {
+    player.isCrashed = true;
+
+    // showPopup();
+    // $(".game-end h1").html("Congratulations!");
+    // $(".game-end h2").html("You caught the metro!");
+  }
+  // console.log("WINNING!!!!!");
+  pause();
+}
 
 // ---------------------------------------------------------------
 
-//// PLAY BUTTONS & TIMER ////
+//// TIMER ////
+
+var element = document.getElementById("timer");
+var timerId = setInterval(myTimer, 1000);
+var time = 5;
+
+function myTimer() {
+  if (time === -1) {
+    clearInterval(timerId);
+    player.isCrashed = true;
+    showPopup();
+  } else {
+    element.innerHTML = "00:" + time + "s";
+    time--;
+  }
+}
+
+function pause() {
+  clearInterval(timerId);
+}
+
+//// PLAY BUTTONS ////
 
 $(".play-btn").click(function() {
+  console.log("START START");
+  setInterval(myTimer, 1000);
   $(".game-start").addClass("hidden");
-
-  var element = document.getElementById("timer");
-  var timerId = setInterval(myTimer, 1000);
-  var time = 5;
-
-  function myTimer() {
-    if (time === -1) {
-      clearInterval(timerId);
-      $(".game-end").addClass("showing");
-    } else {
-      element.innerHTML = "00:0" + time + "s";
-      time--;
-    }
-  }
+  player.isCrashed = false;
 });
 
 $(".restart-btn").click(function() {
-  updateEndContent();
-  togglePopup();
+  //  togglePopup();
+  hidePopup();
+  console.log("AGAIN AGAIN");
+  myTimer();
+  drawPlayer();
 
-  var element = document.getElementById("timer");
-  var timerId = setInterval(myTimer, 1000);
-  var time = 5;
+  // var element = document.getElementById("timer");
+  // var timerId = setInterval(restartTimer, 1000);
+  // var time = 5;
 
-  function myTimer() {
-    // Update the count down every 1 second
-    if (time === -1) {
-      clearInterval(timerId);
-      $(".game-end").addClass("showing");
-    } else {
-      element.innerHTML = "00:0" + time + "s";
-      time--;
-    }
-  }
+  // function restartTimer() {
+  //   // Update the count down every 1 second
+  //   if (time === -1) {
+  //     clearInterval(timerId);
+  //   } else {
+  //     element.innerHTML = "00:0" + time + "s";
+  //     time--;
+  //   }
+  // }
 });
 
+function showPopup() {
+  $(".game-end").addClass("showing");
+}
+
+function hidePopup() {
+  $(".game-end").removeClass("showing");
+}
+
 function togglePopup() {
-  if ($(".game-end").hasClass());
-
-  var isPopupShowing = $(".game-end").hasClass("showing");
-
-  if (isPopupShowing) {
+  if ($(".game-end").hasClass("showing")) {
+    console.log("POP UP END SCREEN already here");
     $(".game-end").removeClass("showing");
   } else {
     $(".game-end").addClass("showing");
   }
 }
 
-// ---------------------------------------------------------------
-// Update Pop-up message with result
+// function resetPlayer() {
+//   console.log("RESET player");
+//   var playerImg = new Image();
+//   playerImg.src = "./images/player.jpeg";
+//   playerImg.onLoad = function() {
+//     drawPlayer();
+//   };
 
-function updateEndContent() {
-  var time = 0;
-
-  if (time === -1) {
-    $(".game-end h2").html("Time is up!");
-  } else if (celine.isCrashed) {
-    $(".game-end h2").html("Watch out for the other riders!");
-  } else {
-    $(".game-end h2").html("You caught the metro!");
-  }
-}
+//   var player = {
+//     x: 350,
+//     y: 500,
+//     width: 100,
+//     height: 100,
+//     isCrashed: false
+//   };
+// }

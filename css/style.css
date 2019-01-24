@@ -11,7 +11,7 @@ main {
   background-image: url("../images/metro-cabin.png");
   background-repeat: no-repeat;
   width: 1240px;
-  height: 220px;
+  height: 243px;
 }
 
 section {
@@ -167,7 +167,7 @@ p {
   box-sizing: content-box;
   position: absolute;
   left: 10px;
-  top: 230px;
+  top: 248px;
   width: 170px;
   z-index: 42;
   padding: 6px;
