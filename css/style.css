@@ -118,7 +118,7 @@ p {
 .end-content {
   box-sizing: content-box;
   width: 600px;
-  height: 265px;
+  height: 185px;
   position: fixed;
   background-color: white;
   border: 10px solid #55a996;

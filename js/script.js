@@ -211,10 +211,12 @@ function myTimer() {
     clearInterval(timerId);
     player.isCrashed = true;
     showPopup();
+    // $(".game-end h2").html("Time's Up!");
   } else {
     element.innerHTML = "00:" + time + "s";
     time--;
   }
+  return;
 }
 
 function pause() {
@@ -235,7 +237,8 @@ $(".restart-btn").click(function() {
   hidePopup();
   console.log("AGAIN AGAIN");
   myTimer();
-  drawPlayer();
+  // drawPlayer();
+  drawingLoop();
 
   // var element = document.getElementById("timer");
   // var timerId = setInterval(restartTimer, 1000);
