@@ -105,7 +105,7 @@ function drawingLoop() {
     onePerson.drawPeople();
   });
 
-  // checkWon();
+  checkWon();
   checkCrashes();
 
   // ask the browser for a chance to re-draw the scene
@@ -128,14 +128,14 @@ document.onkeydown = function(event) {
   switch (event.keyCode) {
     case 37: // left arrow
       event.preventDefault();
-      if (player.x > 0) {
+      if (player.x > 10) {
         player.x -= 20;
       }
       break;
 
     case 38: // up arrow
       event.preventDefault();
-      if (player.y > 0) {
+      if (player.y > -10) {
         player.y -= 20;
       }
       break;
@@ -172,9 +172,9 @@ function rectangleCollision(rectA, rectB) {
 function checkCrashes() {
   allPeople.forEach(function(onePerson) {
     if (rectangleCollision(player, onePerson) && player.isCrashed === false) {
-      player.isCrashed = true;
-      pause(); // not working !!
-      showPopup();
+      console.log("check crashes");
+
+      gameOver();
       $(".game-end h2").html("Watch out for the other riders!");
     }
   });
@@ -182,20 +182,14 @@ function checkCrashes() {
 
 //// WINNING ////
 
-function playerPosition(rectA) {
-  return rectA.x >= 0 && rectA.x + rectA.width <= 800;
-}
-
 function checkWon() {
-  if (playerPosition(player)) {
-    player.isCrashed = true;
+  if (player.y <= -10) {
+    console.log("WINNING!!!!!");
 
-    // showPopup();
-    // $(".game-end h1").html("Congratulations!");
-    // $(".game-end h2").html("You caught the metro!");
+    gameOver();
+    $(".game-end h1").html("🎉 Congratulations! 🎉");
+    $(".game-end h2").html("You caught the metro!");
   }
-  // console.log("WINNING!!!!!");
-  pause();
 }
 
 // ---------------------------------------------------------------
@@ -203,14 +197,15 @@ function checkWon() {
 //// TIMER ////
 
 var element = document.getElementById("timer");
-var timerId = setInterval(myTimer, 1000);
-var time = 5;
+var timerId;
+var time = 30;
 
 function myTimer() {
   if (time === -1) {
-    clearInterval(timerId);
-    player.isCrashed = true;
-    showPopup();
+    console.log("My timer");
+
+    gameOver();
+    // return;
     // $(".game-end h2").html("Time's Up!");
   } else {
     element.innerHTML = "00:" + time + "s";
@@ -223,40 +218,44 @@ function pause() {
   clearInterval(timerId);
 }
 
+function restartTimer() {
+  // Update the count down every 1 second
+  time = 30;
+  element.innerHTML = "00:" + time + "s";
+  clearInterval(timerId);
+  timerId = setInterval(myTimer, 1000);
+}
+
 //// PLAY BUTTONS ////
 
 $(".play-btn").click(function() {
   console.log("START START");
-  setInterval(myTimer, 1000);
+  timerId = setInterval(myTimer, 1000);
   $(".game-start").addClass("hidden");
   player.isCrashed = false;
 });
 
 $(".restart-btn").click(function() {
-  //  togglePopup();
   hidePopup();
   console.log("AGAIN AGAIN");
-  myTimer();
-  // drawPlayer();
-  drawingLoop();
+  restartTimer();
+  player.x = 346;
+  player.y = 460;
+  player.isCrashed = false;
 
-  // var element = document.getElementById("timer");
-  // var timerId = setInterval(restartTimer, 1000);
-  // var time = 5;
-
-  // function restartTimer() {
-  //   // Update the count down every 1 second
-  //   if (time === -1) {
-  //     clearInterval(timerId);
-  //   } else {
-  //     element.innerHTML = "00:0" + time + "s";
-  //     time--;
-  //   }
-  // }
+  allPeople = [
+    // x, y, width, height, speed
+    new People(businesswomanImg, 100, -140, 90, 140, 3),
+    new People(businessmanImg, 300, -140, 89, 140, 4),
+    new People(touristImg, 450, -140, 153, 140, 3),
+    new People(womanImg, 660, -140, 124, 140, 1)
+  ];
 });
 
-function showPopup() {
+function gameOver() {
   $(".game-end").addClass("showing");
+  clearInterval(timerId);
+  player.isCrashed = true;
 }
 
 function hidePopup() {
