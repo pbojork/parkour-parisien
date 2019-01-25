@@ -4,27 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Catch the Metro Game</title>
+    <title>Parkour Parisien</title>
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
     <main>
       <div class="metro-cabin"></div>
       <section>
-        <div class="panel"><p id="timer">00:30s</p></div>
+        <div class="panel"><p id="timer">00:15</p></div>
         <!-- DON'T set the width and height in CSS -->
         <canvas class="game-area" width="800" height="600"></canvas>
       </section>
 
       <div class="game-start">
         <div class="start-content">
-          <h1>Catch the Metro Game</h1>
+          <h1>Parkour Parisien</h1>
           <h2>It's rush hour in Paris!</h2>
-          <p>
+          <p class="intro">
             Catch your train before the time is up <br />while avoiding the
             characters of the metro.
           </p>
-          <button class="play-btn">Play the Game!</button>
+          <p class="instructions">
+            Use the arrow keys to move around the platform.
+          </p>
+          <button class="play-btn">Play</button>
         </div>
       </div>
 
@@ -32,7 +35,7 @@
         <div class="end-content">
           <h1>Game Over</h1>
           <h2>Time's up!</h2>
-          <button class="restart-btn">Play Again!</button>
+          <button class="restart-btn">Play Again</button>
         </div>
       </div>
     </main>

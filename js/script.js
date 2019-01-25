@@ -150,7 +150,7 @@ document.onkeydown = function(event) {
 
     case 40: // down arrow
       event.preventDefault();
-      if (player.y < 500) {
+      if (player.y < 460) {
         // change to new character
         player.y += 20;
       }
@@ -198,7 +198,7 @@ function checkWon() {
 
 var element = document.getElementById("timer");
 var timerId;
-var time = 30;
+var time = 14;
 
 function myTimer() {
   if (time === -1) {
@@ -208,7 +208,7 @@ function myTimer() {
     // return;
     // $(".game-end h2").html("Time's Up!");
   } else {
-    element.innerHTML = "00:" + time + "s";
+    element.innerHTML = "00:" + time;
     time--;
   }
   return;
@@ -220,8 +220,8 @@ function pause() {
 
 function restartTimer() {
   // Update the count down every 1 second
-  time = 30;
-  element.innerHTML = "00:" + time + "s";
+  time = 15;
+  element.innerHTML = "00:" + time;
   clearInterval(timerId);
   timerId = setInterval(myTimer, 1000);
 }
