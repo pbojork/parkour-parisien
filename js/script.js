@@ -172,9 +172,10 @@ function rectangleCollision(rectA, rectB) {
 function checkCrashes() {
   allPeople.forEach(function(onePerson) {
     if (rectangleCollision(player, onePerson) && player.isCrashed === false) {
-      console.log("check crashes");
+      // console.log("check crashes");
 
       gameOver();
+      $(".game-end h1").html("Game Over");
       $(".game-end h2").html("Watch out for the other riders!");
     }
   });
@@ -184,7 +185,7 @@ function checkCrashes() {
 
 function checkWon() {
   if (player.y <= -10) {
-    console.log("WINNING!!!!!");
+    // console.log("WINNING!!!!!");
 
     gameOver();
     $(".game-end h1").html("🎉 Congratulations! 🎉");
@@ -202,7 +203,7 @@ var time = 14;
 
 function myTimer() {
   if (time === -1) {
-    console.log("My timer");
+    // console.log("My timer");
 
     gameOver();
     // return;
@@ -229,7 +230,7 @@ function restartTimer() {
 //// PLAY BUTTONS ////
 
 $(".play-btn").click(function() {
-  console.log("START START");
+  // console.log("START START");
   timerId = setInterval(myTimer, 1000);
   $(".game-start").addClass("hidden");
   player.isCrashed = false;
@@ -237,7 +238,7 @@ $(".play-btn").click(function() {
 
 $(".restart-btn").click(function() {
   hidePopup();
-  console.log("AGAIN AGAIN");
+  // console.log("AGAIN AGAIN");
   restartTimer();
   player.x = 346;
   player.y = 460;
@@ -262,28 +263,11 @@ function hidePopup() {
   $(".game-end").removeClass("showing");
 }
 
-function togglePopup() {
-  if ($(".game-end").hasClass("showing")) {
-    console.log("POP UP END SCREEN already here");
-    $(".game-end").removeClass("showing");
-  } else {
-    $(".game-end").addClass("showing");
-  }
-}
-
-// function resetPlayer() {
-//   console.log("RESET player");
-//   var playerImg = new Image();
-//   playerImg.src = "./images/player.jpeg";
-//   playerImg.onLoad = function() {
-//     drawPlayer();
-//   };
-
-//   var player = {
-//     x: 350,
-//     y: 500,
-//     width: 100,
-//     height: 100,
-//     isCrashed: false
-//   };
+// function togglePopup() {
+//   if ($(".game-end").hasClass("showing")) {
+//     console.log("POP UP END SCREEN already here");
+//     $(".game-end").removeClass("showing");
+//   } else {
+//     $(".game-end").addClass("showing");
+//   }
 // }
